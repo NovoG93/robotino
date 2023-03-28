@@ -1,0 +1,378 @@
+<sdf version='1.7'>
+  <model name='robotino'>
+    <link name='base_link'>
+      <inertial>
+        <pose>0.004635 0.000343 0.020131 0 -0 0</pose>
+        <mass>20.564</mass>
+        <inertia>
+          <ixx>5.29949</ixx>
+          <ixy>-0.00115877</ixy>
+          <ixz>-0.0680432</ixz>
+          <iyy>5.31169</iyy>
+          <iyz>-0.00503277</iyz>
+          <izz>5.01963</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0 0 0.025 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.05</length>
+            <radius>0.18</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__camera_link_collision_1'>
+        <pose>0.169 0.0125 0.734 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.07271 0.27794 0.073</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__command_bridge_link_collision_2'>
+        <pose>-0.05 0 0.13 0 -0 1.57079</pose>
+        <geometry>
+          <box>
+            <size>0.25 0.11 0.16</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__hokuyo_link_collision_3'>
+        <pose>0.06 0 0.229 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.07</length>
+            <radius>0.02</radius>
+          </cylinder>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose>0.01 0 0 0 -0 1.57079</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://robotino_description/meshes/parts/robotino_base.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__anglebracketusb_link_visual_1'>
+        <pose>0.008 0 0.137 0 -0 1.57079</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://robotino_description/meshes/parts/angle_bracket_usb_hub.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__camera_link_visual_2'>
+        <pose>0.169 0.0125 0.734 0 -0 1.57079</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://robotino_description/meshes/sensors/kinect.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__hokuyo_link_visual_3'>
+        <pose>0.06 0 0.194 0 -0 1.57079</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://robotino_description/meshes/sensors/hokuyo.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__platform_link_visual_4'>
+        <pose>0 0 0.42 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.58</length>
+            <radius>0.04</radius>
+          </cylinder>
+        </geometry>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__platform_link_visual_5'>
+        <pose>0 0 0.71 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.02</length>
+            <radius>0.22</radius>
+          </cylinder>
+        </geometry>
+      </visual>
+      <gravity>1</gravity>
+      <gravity>1</gravity>
+      <self_collide>0</self_collide>
+      <sensor name='base_contact_sensor' type='contact'>
+        <always_on>1</always_on>
+        <update_rate>100</update_rate>
+        <contact>
+          <collision>base_link_collision</collision>
+          <topic>base_bumper</topic>
+        </contact>
+        <plugin name='plugin_name' filename='libgazebo_ros_bumper.so'>
+          <ros>
+            <namespace>robotino</namespace>
+            <remapping>bumper_states:=base_bumper</remapping>
+          </ros>
+          <frame_name>base_link</frame_name>
+        </plugin>
+      </sensor>
+      <sensor name='camera' type='depth'>
+        <always_on>1</always_on>
+        <update_rate>20</update_rate>
+        <camera name='kinect'>
+          <distortion>
+            <k1>0.1</k1>
+            <k2>0.2</k2>
+            <k3>0.3</k3>
+            <p1>0.4</p1>
+            <p2>0.5</p2>
+            <center>0.5 0.5</center>
+          </distortion>
+          <horizontal_fov>1.047</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>240</height>
+          </image>
+          <clip>
+            <near>0.1</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <plugin name='kinect_plugin' filename='libgazebo_ros_camera.so'>
+          <ros>
+            <namespace>robotino</namespace>
+          </ros>
+          <camera_name>kinect</camera_name>
+          <frame_name>camera_depth_optical_frame</frame_name>
+          <hack_baseline>0.07</hack_baseline>
+          <min_depth>0.001</min_depth>
+          <max_depth>300.0</max_depth>
+        </plugin>
+        <pose>0.169 0.0125 0.734 0 -0 0</pose>
+      </sensor>
+      <sensor name='hokuyo_sensor' type='ray'>
+        <visualize>1</visualize>
+        <always_on>1</always_on>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>360</samples>
+              <resolution>1</resolution>
+              <min_angle>-1.5708</min_angle>
+              <max_angle>1.5708</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.1</min>
+            <max>10</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0</mean>
+            <stddev>0.01</stddev>
+          </noise>
+        </ray>
+        <update_rate>30</update_rate>
+        <plugin name='hokuyo_plugin' filename='libgazebo_ros_ray_sensor.so'>
+          <ros>
+            <namespace>robotino</namespace>
+            <remapping>~/out:=scan</remapping>
+          </ros>
+          <output_type>sensor_msgs/LaserScan</output_type>
+          <frame_name>hokuyo_link</frame_name>
+        </plugin>
+        <pose>0.06 0 0.194 0 -0 0</pose>
+      </sensor>
+    </link>
+    <joint name='wheel0_joint' type='revolute'>
+      <pose relative_to='base_link'>0.065 0.11 0.04 0 -0 1.0472</pose>
+      <parent>base_link</parent>
+      <child>wheel0_link</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel0_link'>
+      <pose relative_to='wheel0_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 -0 0</pose>
+        <mass>1e-05</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+      <visual name='wheel0_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://robotino_description/meshes/parts/robotino_wheel.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Yellow</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+    </link>
+    <joint name='wheel1_joint' type='revolute'>
+      <pose relative_to='base_link'>-0.13 0 0.04 0 -0 0</pose>
+      <parent>base_link</parent>
+      <child>wheel1_link</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel1_link'>
+      <pose relative_to='wheel1_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 -0 0</pose>
+        <mass>1e-05</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+      <visual name='wheel1_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://robotino_description/meshes/parts/robotino_wheel.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Yellow</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+    </link>
+    <joint name='wheel2_joint' type='revolute'>
+      <pose relative_to='base_link'>0.065 -0.11 0.04 0 0 -1.0472</pose>
+      <parent>base_link</parent>
+      <child>wheel2_link</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='wheel2_link'>
+      <pose relative_to='wheel2_joint'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 -0 0</pose>
+        <mass>1e-05</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+      <visual name='wheel2_link_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>0.01 0.01 0.01</scale>
+            <uri>model://robotino_description/meshes/parts/robotino_wheel.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Yellow</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+      <gravity>1</gravity>
+    </link>
+    <static>0</static>
+    <plugin name='object_controller' filename='libgazebo_ros_planar_move.so'>
+      <ros>
+        <namespace>robotino</namespace>
+      </ros>
+      <update_rate>100</update_rate>
+      <publish_rate>20</publish_rate>
+      <publish_odom>1</publish_odom>
+      <publish_odom_tf>1</publish_odom_tf>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_link</robot_base_frame>
+      <covariance_x>0.0001</covariance_x>
+      <covariance_y>0.0001</covariance_y>
+      <covariance_yaw>0.01</covariance_yaw>
+    </plugin>
+  </model>
+</sdf>
