@@ -8,6 +8,7 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.conditions import IfCondition
 
 
 def generate_launch_description():
@@ -20,6 +21,8 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
+        DeclareLaunchArgument('gui', default_value='true', description='Flag to enable or disable GUI nodes'),
+
         Node(
             package='rviz2',
             executable='rviz2',
@@ -28,6 +31,7 @@ def generate_launch_description():
                 '-d', rviz_path
             ],
             output='screen',
+            condition=IfCondition(LaunchConfiguration('gui'))
         ),
 
         IncludeLaunchDescription(
@@ -35,11 +39,13 @@ def generate_launch_description():
                 os.path.join(robotino_bringup_path, 'launch', 'robotino_gazebo.launch.py')
             )
         ),
+
         Node(
             package='teleop_twist_keyboard',
             executable='teleop_twist_keyboard',
             namespace='robotino',
             output='screen',
-            prefix='xterm -e'
+            prefix='xterm -e',
+            condition=IfCondition(LaunchConfiguration('gui'))
         )
     ])

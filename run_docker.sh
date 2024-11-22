@@ -22,5 +22,5 @@ docker run \
     --privileged \
     --net=host \
     --name="robotino" \
-    georgno/robotino:ros2
+    georgno/robotino:ros2 $@
 xhost -local:docker

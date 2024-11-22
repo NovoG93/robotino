@@ -8,6 +8,7 @@ from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.conditions import IfCondition
 
 import xacro
 
@@ -24,12 +25,20 @@ def generate_launch_description():
     robot_desc = robot_description_config.toxml()
     model_ns = 'robotino'
 
-    world_file = os.path.join(
+    default_world_file = os.path.join(
         get_package_share_directory('robotino_description'),
         'worlds', 'playground.world'
     )
 
+    world_file = LaunchConfiguration('world_file')
+
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'world_file',
+            default_value=default_world_file,
+            description='Path to the world file to load in Gazebo'
+        ),
+
         Node(
             package='robot_state_publisher',
             executable='robot_state_publisher',
@@ -61,15 +70,10 @@ def generate_launch_description():
             PythonLaunchDescriptionSource(
                 os.path.join(pkg_gazebo_ros, 'launch', 'gzclient.launch.py')
             ),
-            launch_arguments={'verbose': 'true'}.items()
+            launch_arguments={'verbose': 'true'}.items(),
+            condition=IfCondition(LaunchConfiguration('gui'))
         ),
 
-        # IncludeLaunchDescription(
-        #     PythonLaunchDescriptionSource(
-        #         os.path.join(get_package_share_directory('robotino_bringup'), 'launch', 'spawn_robotino.launch.py',
-        #                      )
-        #     )
-        # ),
         Node(
             package='robotino_bringup',
             executable='spawn_robotino',
