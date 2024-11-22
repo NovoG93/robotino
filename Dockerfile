@@ -1,4 +1,4 @@
-FROM ros:humble-ros-core-jammy
+FROM ros:iron-ros-core-jammy
 
 RUN apt-get update \
     && apt-get install -y \
@@ -14,7 +14,7 @@ RUN echo "deb http://packages.osrfoundation.org/gazebo/ubuntu `lsb_release -cs` 
     && apt-get update \
     && apt-get install -y \
     gazebo \
-    ros-humble-gazebo-ros-pkgs \
+    ros-iron-gazebo-ros-pkgs \
     python3-colcon-common-extensions python3-rosdep --no-install-recommends \
     && apt-get clean
 RUN rosdep init && rosdep update
@@ -29,8 +29,8 @@ COPY ./robotino_bringup /ros2_ws/src/robotino_bringup
 
 WORKDIR /ros2_ws
 RUN /bin/bash -c 'cd /ros2_ws/ \
-    && source /opt/ros/humble/setup.bash \
+    && source /opt/ros/iron/setup.bash \
     && rosdep install --from-paths src --ignore-src -r -y \
     && colcon build'
 
-CMD ["/bin/bash", "-c", "source /opt/ros/humble/setup.bash && source /ros2_ws/install/setup.bash && ros2 launch robotino_bringup robotino_bringup.launch.py"]
+CMD ["/bin/bash", "-c", "source /opt/ros/iron/setup.bash && source /ros2_ws/install/setup.bash && ros2 launch robotino_bringup robotino_bringup.launch.py"]
