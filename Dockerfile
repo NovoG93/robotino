@@ -33,4 +33,8 @@ RUN /bin/bash -c 'cd /ros2_ws/ \
     && rosdep install --from-paths src --ignore-src -r -y \
     && colcon build'
 
-CMD ["/bin/bash", "-c", "source /opt/ros/iron/setup.bash && source /ros2_ws/install/setup.bash && ros2 launch robotino_bringup robotino_bringup.launch.py"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+SHELL [ "/bin/bash", "-c" ]
+ENTRYPOINT [ "/entrypoint.sh" ]
+CMD [ "ros2", "launch", "robotino_bringup", "robotino_bringup.launch.py" ]
