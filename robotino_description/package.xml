@@ -11,6 +11,7 @@
 
   <depend>gazebo</depend>
   <depend>gazebo_ros</depend>
+  <depend>gazebo_plugins</depend>
   <depend>xacro</depend>
   <depend>joint_state_publisher</depend>
 
